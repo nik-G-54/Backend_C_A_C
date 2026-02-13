@@ -1,7 +1,8 @@
 import express from "express";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 
-import userRouter from "./route/user.route.js" 
+
 
 
 const app=express();
@@ -14,10 +15,15 @@ app.use(express.json({limit:"16kb"}))// we are accepting data in the json format
 app.use(express.urlencoded({extended:true,limit:"16kb"}))
 // if static file like logo and other things are comming that are store in any folder like public
 app.use(express.static("public"))
-app.use(cookiesParser())
+app.use(cookieParser())
+
+// routes import 
+ import userRouter from "./route/user.route.js"  
 
 
-// app.use("/api/v1/user",userRouter);
+
+// routes declared
+app.use("/api/v1/users",userRouter);
 
 
 export {app}
