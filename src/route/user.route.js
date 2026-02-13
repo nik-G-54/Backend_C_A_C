@@ -7,7 +7,7 @@ import { Upload } from "../middleware/multer.js";
 const router=Router();
 
 
-router.route("/register").post(Upload.fields([
+router.route("/register").post(Upload.fields([  // here file accept the array 
     {
         name:"avtar",
         maxcount:1
