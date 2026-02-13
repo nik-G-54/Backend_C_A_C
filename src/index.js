@@ -10,7 +10,7 @@ dotenv.config({
 })
 
 connectDB().then(()=>{
-   app.listen(process.env.PORT || 8000,()=>{
+   app.listen(process.env.PORT,()=>{
     console.log(`mondodb running on this port :${process.env.PORT}`)
    })
 }).catch((error)=>{
