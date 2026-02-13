@@ -1,6 +1,6 @@
 import {asynchandler} from "../utils/asynchandller.js";
 import {ApiError} from "../utils/apierror.js";
-import User from "../model/user.model.js";
+import {User}  from "../models/user.model.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
 // import { Upload } from "../middleware/multer.js";
 import { ApiResponce } from "../utils/ApiResponce.js";
@@ -11,7 +11,7 @@ import { ApiResponce } from "../utils/ApiResponce.js";
 const userRegister= asynchandler( async (req,res)=>{
     console.log("i am here"); 
    
-    const {username,email,password}=req.body
+    const {fullname,username,email,password}=req.body
     console.log(email,"email")
     //1- data from body by req.body 
     //2-data check up empty or not
@@ -41,7 +41,7 @@ const userRegister= asynchandler( async (req,res)=>{
 
 
     const existedUser=await User.findOne(
-         $or[ {email},{username}]
+         {$or: [ {email},{username}]}
         )
 
     // if(!existedUser){  // wrong condition we have to check up if user exist then throw error
@@ -54,10 +54,10 @@ const userRegister= asynchandler( async (req,res)=>{
 
     /// step-2 file path
 
-    const avtarlocalpath=req.files?.avtar[0]?.path // here we use optional chaining because if file not uplod then it will give error so by this we can avoid this error and it will return undefined if file not uplod
+    const avtarlocalpath=req.files?.avtar?.[0]?.path // here we use optional chaining because if file not uplod then it will give error so by this we can avoid this error and it will return undefined if file not uplod
 console.log(avtarlocalpath,"avtarpath")  // basically here we get the file path of the uplod file and this path is store in the local storage of our project and after that we will uplod this file on cloudinary and after uplod we will get the url of the file and this url we will store in the db and this url we will use to display the image on the frontend
 
-const converImagelocalpath=req.files?.coverImage[0].path;
+const converImagelocalpath=req.files?.coverImage?.[0]?.path;
 console.log(converImagelocalpath,"coverimagepath");
 
 if(!avtarlocalpath){
@@ -68,8 +68,8 @@ if(!converImagelocalpath){
  }
 
 
-const avtar=uploadOnCloudinary(avtarlocalpath)
-const coverImage=uploadOnCloudinary(converImagelocalpath)
+const avtar= await uploadOnCloudinary(avtarlocalpath)
+const coverImage=await uploadOnCloudinary(converImagelocalpath)
 
 if(!avtar){
     throw new ApiError(500,"error in uploading avtar on cloudinary")

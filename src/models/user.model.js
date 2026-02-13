@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { Schema } from "mongoose";
+const { Schema } = mongoose
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
@@ -14,7 +14,7 @@ const userSchema= new Schema(
         index:true
     },
     email:{
-        type:true,
+        type:String,
         require:true,
         lowercase:true,
         trim:true,
@@ -38,7 +38,7 @@ const userSchema= new Schema(
         type:String
     },
     watchHistory:[{
-        type:Schema.Type.ObjectId,
+        type:Schema.Types.ObjectId,
         ref:"Video"
     }],
     refreshToken:{
