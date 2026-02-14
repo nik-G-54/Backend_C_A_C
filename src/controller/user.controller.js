@@ -34,7 +34,7 @@ const userRegister= asynchandler( async (req,res)=>{
     // optimiseMethod
 
 
-    if([username,email,password].some((field)=>field?.trim()==="")){   // this is the optimised method for check up empty field this accept  array and check up every field is empty or not
+    if([username,email,password,fullname].some((field)=>field?.trim()==="")){   // this is the optimised method for check up empty field this accept  array and check up every field is empty or not
         throw new ApiError(400,"all fields required")
     }
 
@@ -54,12 +54,12 @@ const userRegister= asynchandler( async (req,res)=>{
 
     /// step-2 file path
 
-    const avtarlocalpath=req.files?.avtar?.[0]?.path // here we use optional chaining because if file not uplod then it will give error so by this we can avoid this error and it will return undefined if file not uplod
-console.log(avtarlocalpath,"avtarpath")  // basically here we get the file path of the uplod file and this path is store in the local storage of our project and after that we will uplod this file on cloudinary and after uplod we will get the url of the file and this url we will store in the db and this url we will use to display the image on the frontend
-
-const converImagelocalpath=req.files?.coverImage?.[0]?.path;
-console.log(converImagelocalpath,"coverimagepath");
-
+    const avtarlocalpath=req.files?.avtar[0]?.path // here we use optional chaining because if file not uplod then it will give error so by this we can avoid this error and it will return undefined if file not uplod
+console.log(avtarlocalpath,"==avtarpath")  // basically here we get the file path of the uplod file and this path is store in the local storage of our project and after that we will uplod this file on cloudinary and after uplod we will get the url of the file and this url we will store in the db and this url we will use to display the image on the frontend
+console.log(req.files);
+const converImagelocalpath=req.files?.coverImage[0].path;
+console.log(converImagelocalpath,"===coverimagepath");
+console.log(req.files);
 if(!avtarlocalpath){
     throw new ApiError(409,"error: file path not fpound")
 }
@@ -69,8 +69,9 @@ if(!converImagelocalpath){
 
 
 const avtar= await uploadOnCloudinary(avtarlocalpath)
+console.log(avtar,"===avtar")  // here we get the responce of the uplod file on cloudinary and this responce contain the url of the uplod file and this url we will store in the db and this url we will use to display the image on the frontend
 const coverImage=await uploadOnCloudinary(converImagelocalpath)
-
+console.log(coverImage,"===coverImage")  // here we get the responce of the uplod file on cloudinary and this responce contain the url of the uplod file and this url we will store in the db and this url we will use to display the image on the frontend 
 if(!avtar){
     throw new ApiError(500,"error in uploading avtar on cloudinary")
 }
