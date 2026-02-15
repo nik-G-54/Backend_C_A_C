@@ -14,4 +14,3 @@ const asynchandler=(requesthandler)=>{
 
 
 // export { asynchandler }
-//mai chutiya hu mera ek hi up ho sakta hai wobhi giveup

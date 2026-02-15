@@ -24,7 +24,7 @@ app.use(cookieParser())
 
 // routes declared
 app.use("/api/v1/users",userRouter);
-
+app.use("/api/v1/users",userRouter);
 
 export {app}
 

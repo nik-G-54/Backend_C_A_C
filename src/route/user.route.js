@@ -1,6 +1,6 @@
 import { Router } from "express";
 
-import { userRegister } from "../controller/user.controller.js";
+import { loginUser, userRegister } from "../controller/user.controller.js";
 import { Upload } from "../middleware/multer.js";
 
 
@@ -17,5 +17,6 @@ router.route("/register").post(Upload.fields([  // here file accept the array
         maxcount:1
     }
 ]),userRegister)
+router.route("/login").post(loginUser)
 
 export default router

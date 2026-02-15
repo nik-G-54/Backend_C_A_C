@@ -104,4 +104,28 @@ return res.status(201).json(
 
 })
 
-export {userRegister}
+const loginUser=asynchandler(async(req,res)=>{
+//1-data extract krna from frontend by { req.body}
+//2-email and password verify validation lgana email.trim()=== ""  or password.trim()==="" then throw error
+//3-find user by email or by using findOne method by email and if user not exist then throw error
+//4-if not found  show  a message usernot register with this email
+//5-if userfind then comapre password or validate bassword by using bycrpt.isverify method and if password not match then throw error
+//6- if password match generate accestoken and refresh token by jwt.sign({},{},{})
+//7-send refresh token and accestoken to the frontend and also store refresh token in the db for future use and also set this refresh token in the httpOnly cookie for security purpose because by this we can avoid the security issue because if we send this data to the frontend then it can be easily accessed by the hacker and they can use this data to hack our application so by this we can avoid this issue and also we can reduce the size of the responce because we don't need to send this data to the frontend 
+
+ const {email,password,username} = req.body
+
+ if([email,password,username].some((field)=>field?.trim()==="")){
+    throw new ApiError(400,"please provide a email or password or username")
+ }
+
+ const user= await User.findOne({
+    $or:[{email},{username}]
+ })
+ if(!user){
+    throw new ApiError(400,"user not register with this email or username")
+ }
+
+})
+
+export {userRegister,loginUser}
