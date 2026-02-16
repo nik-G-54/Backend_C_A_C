@@ -7,6 +7,26 @@ import { ApiResponce } from "../utils/ApiResponce.js";
 
 
 
+ // 1-generate access token ke andr
+ //2-user ki detail find kro userId se usko save kro fir us user se access token generate kro by calling the method of user model and pass the userId in the method and store this access token in a variable and also generate refresh token by calling the method of user model and pass the userId in the method and store this refresh token in a variable and return both access token and refresh token to the frontend for future use
+const generateAccessTokenandRefreshToken=async(userId)=>{
+    try {
+        const user=await User.findOne({userId})
+        const AccessToken= user.generateAccessToken(userId)
+        const RefreshToken= user.generateRefreshToken(userId)
+
+        user.refreshToken=RefreshToken
+        await user.save({validateBeforeSave:false})
+        
+    } catch (error) {
+        throw new ApiError(500,"error in generating access token and refresh token")
+    }
+
+    return{AccessToken,RefreshToken}
+    
+}
+
+
 
 const userRegister= asynchandler( async (req,res)=>{
     console.log("i am here"); 
@@ -111,6 +131,7 @@ const loginUser=asynchandler(async(req,res)=>{
 //4-if not found  show  a message usernot register with this email
 //5-if userfind then comapre password or validate bassword by using bycrpt.isverify method and if password not match then throw error
 //6- if password match generate accestoken and refresh token by jwt.sign({},{},{})
+// by caling both function generate and accesstoken and refresh token function 
 //7-send refresh token and accestoken to the frontend and also store refresh token in the db for future use and also set this refresh token in the httpOnly cookie for security purpose because by this we can avoid the security issue because if we send this data to the frontend then it can be easily accessed by the hacker and they can use this data to hack our application so by this we can avoid this issue and also we can reduce the size of the responce because we don't need to send this data to the frontend 
 
  const {email,password,username} = req.body
@@ -122,9 +143,34 @@ const loginUser=asynchandler(async(req,res)=>{
  const user= await User.findOne({
     $or:[{email},{username}]
  })
+ console.log("detail of user: ",user)
  if(!user){
     throw new ApiError(400,"user not register with this email or username")
  }
+const isPasswordvalid= await user.isPasswordCorrect(password)
+
+if(!isPasswordvalid){
+    throw new ApiError(409,"password invalid")
+
+}
+
+
+ const {AccessToken,RefreshToken}=await generateAccessTokenandRefreshToken(user._id)
+
+ const loggedInuser=await User.findById(user._id).select("-password -refreshToken")
+
+ const option ={
+    http:true,
+    secure:true
+ }
+
+ res.status(200).cookies("accessToken",AccessToken,option)
+ .cookies("refreshToken",RefreshToken,option)
+ .json(
+    new ApiResponce(200,"user login successfully",{user:loggedInuser,AccessToken,RefreshToken})
+ )
+
+
 
 })
 

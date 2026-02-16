@@ -19,4 +19,7 @@ router.route("/register").post(Upload.fields([  // here file accept the array
 ]),userRegister)
 router.route("/login").post(loginUser)
 
+// secured route 
+router.route("/logout").post(jwtverify,logoutUser)
+
 export default router
