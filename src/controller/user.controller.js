@@ -5,6 +5,7 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js";
 // import { Upload } from "../middleware/multer.js";
 import { ApiResponce } from "../utils/ApiResponce.js";
 import jwt from "jsonwebtoken"
+import { Aggregate } from "mongoose";
 
 
  // 1-generate access token ke andr
@@ -360,11 +361,82 @@ const updateUserCoverImage = asynchandler(async(req, res) => {
     )
 })
 
+const getUserProfile=asynchandler(async(req,res)=>{
+    const {username}= req.params
+    if(!username?.trim()){
+        throw new ApiError(400, "username is missing")
+    }
+
+    const chanel= await User.aggregate([
+        {
+            $match:{
+                username:username?.toLowerCase()
+            }
+        },
+        {
+            $lookup:{
+                from:"Subscription",
+                localField:"_id",
+                foreignField:"channel",
+                to:"subscribers"
+            }
+        },
+        {
+            $lookup:{
+                from:"Subscription",
+                localField:"_id",
+                foreignField:"subscriber",
+                to:"subscribedTo"
+            }
+        },
+        {
+            $addFields:{
+                $subscriberCount:{
+                    $size:"subscribers"
+                },
+                channelSubscribedToCount:{
+                    $size:"subscribedTo"
+                },
+                isSubscribed:{
+                     $cond: {
+                        if: {$in: [req.user?._id, "$subscribers.subscriber"]},
+                        then: true,
+                        else: false
+                    }
+                }
+            }
+        },
+        {
+            $project: {
+                fullName: 1,
+                username: 1,
+                subscribersCount: 1,
+                channelsSubscribedToCount: 1,
+                isSubscribed: 1,
+                avatar: 1,
+                coverImage: 1,
+                email: 1
+
+            }
+        }
+    ])
+    if(!channel?.length){
+        throw new ApiError(404, "channel does not exists")
+    }
+
+    return res
+    .status(200)
+    .json(
+        new ApiResponse(200, channel[0], "User channel fetched successfully")
+    )
+})
+
 export {userRegister,loginUser,logoutUser,
     refreshAccessToken,
      changePassword,
   getCurrentUser,
   updateAccountDetail,
   updateUserCoverImage,
-   updateUserAvtar
+   updateUserAvtar,
+   getUserProfile
 }
