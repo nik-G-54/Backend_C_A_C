@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose
+import { Schema } from "mongoose";
 import jwt from "jsonwebtoken"
 import bcrypt from "bcrypt"
 
