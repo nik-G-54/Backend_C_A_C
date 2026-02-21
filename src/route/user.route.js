@@ -23,9 +23,16 @@ router.route("/register").post(Upload.fields([  // here file accept the array
 router.route("/login").post(loginUser)
 
 // secured route 
+// router.route("/logout").post(jwtverify,logoutUser)
+// router.route("/refresh-token").post(refreshAccessToken)
+// router.route("/change-password").post(changePassword)
+// router.route("/getCurrentUser").post(getCurrentUser)
+
+
 router.route("/logout").post(jwtverify,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(changePassword)
 router.route("/getCurrentUser").post(getCurrentUser)
+
 
 export default router
