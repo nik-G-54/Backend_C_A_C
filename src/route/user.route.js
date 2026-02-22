@@ -5,12 +5,13 @@ import { loginUser, userRegister,logoutUser,refreshAccessToken,
     getCurrentUser
  } from "../controller/user.controller.js";
 import { Upload } from "../middleware/multer.js";
-
+import { logginratelimit ,registerratelimt } from "../middleware/ratelimmiter/ratelimmiter.js";
+// import ratelimit from "express-rate-limit"
 
 const router=Router();
 
 
-router.route("/register").post(Upload.fields([  // here file accept the array 
+router.route("/register").post(registerratelimt,Upload.fields([  // here file accept the array 
     {
         name:"avtar",
         maxcount:1
@@ -20,7 +21,7 @@ router.route("/register").post(Upload.fields([  // here file accept the array
         maxcount:1
     }
 ]),userRegister)
-router.route("/login").post(loginUser)
+router.route("/login").post(logginratelimit,loginUser)
 
 // secured route 
 // router.route("/logout").post(jwtverify,logoutUser)
@@ -28,7 +29,7 @@ router.route("/login").post(loginUser)
 // router.route("/change-password").post(changePassword)
 // router.route("/getCurrentUser").post(getCurrentUser)
 
-
+// secure route 
 router.route("/logout").post(jwtverify,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(changePassword)
