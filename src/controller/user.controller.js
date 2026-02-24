@@ -1,4 +1,4 @@
-import {asynchandler} from "../utils/asynchandller.js";
+import {asynchandler,deletefilefromCloudinary} from "../utils/asynchandller.js";
 import {ApiError} from "../utils/ApiError.js";
 import {User}  from "../models/user.model.js";
 import {uploadOnCloudinary} from "../utils/cloudinary.js";
@@ -264,7 +264,7 @@ const changePassword=asynchandler(async(res,req)=>{
 
    return res.send(200)
    .json(new ApiResponce(200,{},"Password change successfully"))
-   
+
 
 })
 
@@ -304,22 +304,35 @@ const updateUserAvtar=asynchandler(async(req,res)=>{
     const avtarlocalpath=req.file?.path
     if(!avtarlocalpath){
         throw new ApiError(400,"Avtar file is ,issimg ")
-}
-         
+}     
            
  const avtar= await uploadOnCloudinary(avtarlocalpath)
 
  if(!avtar.url){
     throw new ApiError(400,"error in uploding ")
  }
+ const user= await userRegister.findById(req.user?._id)
+ if(user.avtar?.public_id){
+    await deletefilefromCloudinary(user.avatar.public_id)
+ }
 
-        const user= await User.findByIdAndUpdate(req.user?._id,
-            {
-                $set:avtarlocalpath.url
-            },
-            {new: true}
 
-        ).select("-password")
+ user.avtar={
+    url:avtar.url,
+    public_id:avtar.public_id
+ }
+
+    await user.save({ validateBeforeSave: false })
+
+        // const user= await User.findByIdAndUpdate(req.user?._id,
+        //     {
+        //         $set:avtar.url
+        //     },
+        //     {new: true}
+
+        // ).select("-password")
+
+
 
 
         return res.status(200)
@@ -361,7 +374,7 @@ const updateUserCoverImage = asynchandler(async(req, res) => {
     )
 })
 
-const getUserProfile=asynchandler(async(req,res)=>{
+const getUserChannelProfile=asynchandler(async(req,res)=>{
     const {username}= req.params
     if(!username?.trim()){
         throw new ApiError(400, "username is missing")
@@ -438,5 +451,5 @@ export {userRegister,loginUser,logoutUser,
   updateAccountDetail,
   updateUserCoverImage,
    updateUserAvtar,
-   getUserProfile
+   getUserChannelProfile
 }

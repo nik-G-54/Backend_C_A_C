@@ -31,11 +31,24 @@ const userSchema= new Schema(
         trim:true
     },
     avtar:{
-        type:String,
+        url:{
+             type:String,
         required:true
+        },
+        public_id:{
+             type:String,
+        required:true
+        }
+       
     },
     coverImage:{
-        type:String
+        url:{
+              type:String
+        },
+        public_id:{
+
+            type:String
+        }
     },
     watchHistory:[{
         type:Schema.Types.ObjectId,
@@ -51,7 +64,7 @@ const userSchema= new Schema(
 
 
 userSchema.pre("save",async function(next){
-    if(!this.isModified("password")) return ;
+    if(!this.isModified("password")) return ; // this is use to check that only  password is modified or not if not then return if other feild modified like username or email then it will not return and it will save the data in the database
     this.password=await  bcrypt.hash(this.password,10)
    
 })

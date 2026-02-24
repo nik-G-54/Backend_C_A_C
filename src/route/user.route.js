@@ -2,7 +2,8 @@ import { Router } from "express";
 import { jwtverify } from "../middleware/auth.middleware.js";
 import { loginUser, userRegister,logoutUser,refreshAccessToken,
     changePassword,
-    getCurrentUser
+    getCurrentUser,
+    getUserChannelProfile
  } from "../controller/user.controller.js";
 import { Upload } from "../middleware/multer.js";
 import { logginratelimit ,registerratelimt } from "../middleware/ratelimmiter/ratelimmiter.js";
@@ -34,6 +35,9 @@ router.route("/logout").post(jwtverify,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(changePassword)
 router.route("/getCurrentUser").post(getCurrentUser)
+router.route("/")
+
+
 
 
 export default router
