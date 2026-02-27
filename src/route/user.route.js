@@ -3,7 +3,10 @@ import { jwtverify } from "../middleware/auth.middleware.js";
 import { loginUser, userRegister,logoutUser,refreshAccessToken,
     changePassword,
     getCurrentUser,
-    getUserChannelProfile
+    updateAccountDetail,
+    updateUserAvtar,
+    getUserChannelProfile,
+    getWatchHistory
  } from "../controller/user.controller.js";
 import { Upload } from "../middleware/multer.js";
 import { logginratelimit ,registerratelimt } from "../middleware/ratelimmiter/ratelimmiter.js";
@@ -33,9 +36,13 @@ router.route("/login").post(logginratelimit,loginUser)
 // secure route 
 router.route("/logout").post(jwtverify,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
-router.route("/change-password").post(changePassword)
-router.route("/getCurrentUser").post(getCurrentUser)
-router.route("/")
+router.route("/change-password").post(jwtverify, changePassword)
+router.route("/current-user").post(jwtverify,getCurrentUser)  
+router.route("/update-account").post(jwtverify,updateAccountDetail)
+router.route("/update-avtar").post(jwtverify,Upload.single("avtar"),updateUserAvtar)
+router.route("/cover-image").post(jwtverify,Upload.single("coverImage"),updateUserCoverImage)
+router.route("/c/:username").post(jwtverify,getUserChannelProfile)
+router.route("/history").post(jwtverify,getWatchHistory)
 
 
 

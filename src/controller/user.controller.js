@@ -504,5 +504,6 @@ export {userRegister,loginUser,logoutUser,
   updateAccountDetail,
   updateUserCoverImage,
    updateUserAvtar,
-   getUserChannelProfile
+   getUserChannelProfile,
+   getWatchHistory
 }
