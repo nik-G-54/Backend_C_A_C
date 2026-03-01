@@ -433,17 +433,18 @@ const getUserChannelProfile=asynchandler(async(req,res)=>{
             }
         }
     ])
-    if(!channel?.length){
+    console.log(chanel)
+    if(!chanel?.length){
         throw new ApiError(404, "channel does not exists")
     }
 
     return res
     .status(200)
     .json(
-        new ApiResponse(200, channel[0], "User channel fetched successfully")
+        new ApiResponce(200, chanel[0], "User channel fetched successfully")
     )
 })
-const getWatchHistory = asyncHandler(async(req, res) => {
+const getWatchHistory = asynchandler(async(req, res) => {
     const user = await User.aggregate([
         {
             $match: {
@@ -452,7 +453,7 @@ const getWatchHistory = asyncHandler(async(req, res) => {
         },
         {
             $lookup: {
-                from: "videos",
+                from: "vedios",
                 localField: "watchHistory",
                 foreignField: "_id",
                 as: "watchHistory",
