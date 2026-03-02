@@ -37,12 +37,12 @@ router.route("/login").post(logginratelimit,loginUser)
 router.route("/logout").post(jwtverify,logoutUser)
 router.route("/refresh-token").post(refreshAccessToken)
 router.route("/change-password").post(jwtverify, changePassword)
-router.route("/current-user").post(jwtverify,getCurrentUser)  
-router.route("/update-account").post(jwtverify,updateAccountDetail)
+router.route("/current-user").get(jwtverify,getCurrentUser)  
+router.route("/update-account").patch(jwtverify,updateAccountDetail)
 router.route("/update-avtar").post(jwtverify,Upload.single("avtar"),updateUserAvtar)
 router.route("/cover-image").post(jwtverify,Upload.single("coverImage"),updateUserCoverImage)
-router.route("/c/:username").post(jwtverify,getUserChannelProfile)
-router.route("/history").post(jwtverify,getWatchHistory)
+router.route("/c/:username").get(jwtverify,getUserChannelProfile)
+router.route("/history").get (jwtverify,getWatchHistory)
 
 
 
