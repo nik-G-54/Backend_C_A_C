@@ -31,6 +31,11 @@ export const jwtverify = asynchandler(async (req, res) => {
     }
 })
 
+//     } catch (error) {
+//         throw new ApiError(401, error?.message, "invalid user")
+//     }
+// })
+
 
 // here we verify the token so
 //1- extract token from the cookes 
