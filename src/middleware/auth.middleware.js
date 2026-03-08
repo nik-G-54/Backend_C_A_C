@@ -24,6 +24,8 @@ export const jwtverify = asynchandler(async (req, res) => {
         }
         req.user = user;
         next()
+        // req.user = user;
+        // next()
 
 
     } catch (error) {
