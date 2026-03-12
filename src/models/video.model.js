@@ -41,16 +41,19 @@ import mongoose, { Schema } from "mongoose";
 
 const videoSchema = new Schema({
     videoFile: {
-        type: String, //cloudinary url
+        url: String, //cloudinary url
+        public_id: String,
         required: true
     },
     thumbnail: {
-        type: String, //cloudinary url
+        url: String, //cloudinary url
+        public_id: String,
         required: true
     },
     title: {
         type: String,
-        required: true
+        required: true,
+        trim:true
     },
     description: {
         type: String,
@@ -72,7 +75,11 @@ const videoSchema = new Schema({
         type: Boolean,
         default: true
     },
-}, { timestamps: true })
+}, { timestamps: true });
+// ✅ Add indexes here
+videoSchema.index({ owner: 1 }); // this is for finding list of vedios
+videoSchema.index({ createdAt: -1 });  // this is for sorting
+
 
 
 export const Video = mongoose.model("Video", videoSchema)

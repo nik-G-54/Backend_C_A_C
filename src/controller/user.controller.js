@@ -503,13 +503,3 @@ export {
     getWatchHistory
 }
 
-// export {userRegister,loginUser,logoutUser,
-//     refreshAccessToken,
-//      changePassword,
-//   getCurrentUser,
-//   updateAccountDetail,
-//   updateUserCoverImage,
-//    updateUserAvtar,
-//    getUserChannelProfile,
-//    getWatchHistory
-// }
