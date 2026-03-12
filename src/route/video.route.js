@@ -1,14 +1,16 @@
-import express from "express";
+import {Router} from "express";
 import { Upload } from "../middleware/multer.js";
-import {uploadVideo} from "../controller/video.controller.js";
+import {uploadVideo,getALLvideo} from "../controller/video.controller.js";
 import { jwtverify } from "../middleware/auth.middleware.js";
 
-const router=express.Router();
+const router=Router();
 
-router.route("/upload").post(verifyToken,Upload.fields([
+router.route("/upload").post(jwtverify,Upload.fields([
     {name:"videoupload",maxCount:1},
     {name:"thumbnailupload",maxCount:1}
 ]),uploadVideo)
+router.route("/getallvideos").get(getALLvideo)
+
 
 export default router
     

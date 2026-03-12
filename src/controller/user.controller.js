@@ -1,4 +1,5 @@
-import { asynchandler, deletefilefromCloudinary } from "../utils/asynchandler.js";
+import { asynchandler } from "../utils/asynchandler.js";
+import { deletefilefromCloudinary } from "../utils/deletefilefromCloudinary.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";

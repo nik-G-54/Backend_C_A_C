@@ -3,7 +3,7 @@ import {asynchandler} from "../utils/asynchandler.js"
 import {ApiError} from "../utils/ApiError.js"
 import {ApiResponse} from "../utils/ApiResponse.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
-import {deletefilefromCloudinary} from "../utils/asynchandler.js"
+import {deletefilefromCloudinary} from "../utils/deletefilefromCloudinary.js"
 import { User } from "../models/user.model.js"
 
 
@@ -53,8 +53,21 @@ const uploadVideo = asynchandler(async (req, res) => {
 
 
 // get all videos 
+const getALLvideo=asynchandler(async(req,res)=>{
+      const {page=1,limit=10}=req.query;
+      const skip=(page-1)*limit;
+      const videos=await Video.find({isPublished:true})
+        .populate("owner","username avtar")
+        .skip(skip)
+        .short({createdAt:-1})
+        .limit(limit);
 
+        return res.status(200).json(
+            new ApiResponse(201,"Video  fetch successfully",videos)
+        )
+
+    })
 
 export {uploadVideo,
-
+getALLvideo
 }
