@@ -26,3 +26,10 @@ data save  in this way
   "secure_url": "https://res.cloudinary.com/demo/image/upload/v1700000000/users/abc123-avatar.jpg"
 }
 so to extract the url we use (avtar.url)
+
+
+
+
+
+api end points 
+POST /api/v1/subscriptions/:channelId
