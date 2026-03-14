@@ -31,7 +31,7 @@ app.use(cookieParser())
 // routes import 
  import userRouter from "./route/user.route.js"  
  import videoRouter from "./route/video.route.js"
-import likeRouter from "./route/like.route"
+import likeRouter from "./route/like.route.js"
 
 
 // routes declared

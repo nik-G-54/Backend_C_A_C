@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { jwtverify } from "../middleware/auth.middleware";
-import { togglelike } from "../controller/like.controller";
+import { jwtverify } from "../middleware/auth.middleware.js";
+import { togglelike } from "../controller/like.controller.js";
 
 const router=Router()
 
