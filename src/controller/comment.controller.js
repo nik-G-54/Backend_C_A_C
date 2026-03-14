@@ -1,7 +1,7 @@
-import { Comment } from "../models/comment.model";
-import { ApiError } from "../utils/ApiError";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asynchandler } from "../utils/asynchandler";
+import { Comment } from "../models/comment.model.js";
+import { ApiError } from "../utils/ApiError.js";
+import { ApiResponse } from "../utils/ApiResponse.js";
+import { asynchandler } from "../utils/asynchandler.js";
 
 // add comment 
 const addcomment=asynchandler(async(req,res)=>{

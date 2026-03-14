@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { jwtverify } from "../middleware/auth.middleware";
+import { jwtverify } from "../middleware/auth.middleware.js";
  import {
 addComment,
 getVideoComments,

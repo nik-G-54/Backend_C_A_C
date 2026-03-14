@@ -33,3 +33,8 @@ so to extract the url we use (avtar.url)
 
 api end points 
 POST /api/v1/subscriptions/:channelId
+
+
+
+
+socketio is not completed some part is left 
