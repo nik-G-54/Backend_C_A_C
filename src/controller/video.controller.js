@@ -5,6 +5,7 @@ import {ApiResponse} from "../utils/ApiResponse.js"
 import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import {deletefilefromCloudinary} from "../utils/deletefilefromCloudinary.js"
 import { User } from "../models/user.model.js"
+import { Subscription } from "../models/subscription.model.js"
 
 
 
@@ -16,8 +17,8 @@ const uploadVideo = asynchandler(async (req, res) => {
         throw new ApiError(400,"title and description are required")
     }
  
-    const videofileLocalpath=req.file?.video?.[0]?.path;
-    const thumbnailLocalpath=req.file?.thumbnail?.[0]?.path;
+    const videofileLocalpath=req.files?.video?.[0]?.path;
+    const thumbnailLocalpath=req.files?.thumbnail?.[0]?.path;
 
     if(!videofileLocalpath || !thumbnailLocalpath){
         throw new ApiError(400,"video and thumbnail are required")
@@ -59,15 +60,52 @@ const getALLvideo=asynchandler(async(req,res)=>{
       const videos=await Video.find({isPublished:true})
         .populate("owner","username avtar")
         .skip(skip)
-        .short({createdAt:-1})
+        .sort({createdAt:-1})
         .limit(limit);
 
         return res.status(200).json(
-            new ApiResponse(201,"Video  fetch successfully",videos)
+            new ApiResponse(200,"Video  fetch successfully",videos)
         )
 
+    });
+    console.log("all videos:",getALLvideo)
+
+    // get videoby id 
+
+    const getVideoById = asynchandler (async(req,res)=>{
+
+        const {videoId}=req.params;
+         
+        const video=await Video.findByIdAndUpdate(
+videoId,
+{$inc:{views:1}},
+{new:true}
+).populate("owner","username avtar")
+
+console.log("fetchvideo:",video)
+if(!video){
+    throw new ApiError(404,"Video not found ")
+}
+const subscriberCount=await Subscription.countDocuments({
+     channel:video.owner._id
+})
+console.log(subscriberCount)
+
+return res.status(200).json(
+    new ApiResponse(
+        200,
+        {
+            video,
+            subscriberCount
+        },
+        "video fetch successfully "
+    )
+)
+
+        
     })
 
 export {uploadVideo,
-getALLvideo
+getALLvideo,
+getVideoById
 }
