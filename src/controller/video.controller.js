@@ -72,6 +72,10 @@ const getALLvideo=asynchandler(async(req,res)=>{
 
     // get videoby id 
 
+
+
+
+
     const getVideoById = asynchandler (async(req,res)=>{
 
         const {videoId}=req.params;
@@ -91,12 +95,18 @@ const subscriberCount=await Subscription.countDocuments({
 })
 console.log(subscriberCount)
 
+const likeCount = await Like.countDocuments({
+ video:videoId
+})
+console("totalLikes:",likeCount)
+
 return res.status(200).json(
     new ApiResponse(
         200,
         {
             video,
-            subscriberCount
+            subscriberCount,
+            likeCount
         },
         "video fetch successfully "
     )

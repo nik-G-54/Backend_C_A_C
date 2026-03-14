@@ -31,13 +31,14 @@ app.use(cookieParser())
 // routes import 
  import userRouter from "./route/user.route.js"  
  import videoRouter from "./route/video.route.js"
-
+import likeRouter from "./route/like.route"
 
 
 // routes declared
 app.set("trust proxy",true) // this is use to prevent the to many request on same route in this it divide the proxy 
 app.use("/api/v1/users",userRouter);
 app.use("/api/v1/video",videoRouter);
+app.use("/api/v1/likes",likeRouter);
 
 export {app}
 
