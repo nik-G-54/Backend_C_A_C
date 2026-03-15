@@ -4,7 +4,7 @@ import { ApiResponse } from "../utils/ApiResponse.js";
 import { asynchandler } from "../utils/asynchandler.js";
 
 // add comment 
-const addcomment=asynchandler(async(req,res)=>{
+const addComment=asynchandler(async(req,res)=>{
     const {videoId}=req.params
     const {content}=req.body
 
@@ -26,7 +26,7 @@ const addcomment=asynchandler(async(req,res)=>{
 
 // Get comment 
 
-const gertVideoComment= asynchandler(async(req,res)=>{
+const getVideoComments= asynchandler(async(req,res)=>{
 
     const {videoId}=req.params
 
@@ -68,8 +68,7 @@ const deleteComment=asynchandler(async(req,res)=>{
     )
 })
 
-export {
-  addcomment  ,
+export {addComment,
   deleteComment,
-  gertVideoComment
+  getVideoComments
 }

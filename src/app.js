@@ -45,7 +45,7 @@ app.use("/api/v1/likes",likeRouter);
 app.use("/api/v1/commnets",commentRouter);
 app.use("/api/v1/subscriptions", subscriptionRoutes);
 app.use("/api/v1/chat", chatRoutes)
-app.use("/api/v1/ai", aiRouter)
+app.use("/api/v1/ai", aiRoutes)
 
 export {app}
 

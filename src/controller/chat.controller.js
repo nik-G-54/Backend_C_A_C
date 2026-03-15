@@ -1,9 +1,9 @@
 // import { ChatMessage } from "../models/chatMessage.model.js"
 import { ChatMessage } from "../models/chatmessage.model.js"
-import { asyncHandler } from "../utils/asynchandler.js"
+import { asynchandler } from "../utils/asynchandler.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 
-export const getChatMessages = asyncHandler(async (req,res)=>{
+export const getChatMessages = asynchandler(async (req,res)=>{
 
     const { videoId } = req.params
 

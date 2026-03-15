@@ -1,6 +1,6 @@
-import { generateAIResponse } from "../service/ai.service";
-import { ApiResponse } from "../utils/ApiResponse";
-import { asynchandler } from "../utils/asynchandler";
+import { generateAIResponse } from "../service/ai.service.js";
+// import { ApiResponse } from "../utils/ApiResponse";
+import { asynchandler } from "../utils/asynchandler.js";
 import {ApiError} from "../utils/ApiError.js"
 
 const askAI= asynchandler(async(req,res)=>{

@@ -4,7 +4,7 @@ import { jwtverify } from "../middleware/auth.middleware.js";
 addComment,
 getVideoComments,
 deleteComment
-} from "../controllers/comment.controller.js";
+} from "../controller/comment.controller.js";
 
 const router=Router();
   router.route("/:videoId").post(jwtverify,addComment).get(getVideoComments)
