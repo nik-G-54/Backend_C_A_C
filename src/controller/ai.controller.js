@@ -28,6 +28,7 @@ import { generateAIResponse } from "../service/ai.service.js"
 import { ApiResponse } from "../utils/ApiResponse.js"
 import { ApiError } from "../utils/ApiError.js"
 import { asynchandler } from "../utils/asynchandler.js"
+import { Doubt } from "../models/dout.model.js"
 
 export const askAI = asynchandler(async (req, res) => {
 
@@ -39,11 +40,36 @@ export const askAI = asynchandler(async (req, res) => {
 
     const answer = await generateAIResponse(question)
 
+    const doubt = await Doubt.create({
+        user: req.user?._id,
+        question,
+        answer
+    })
+
     return res.status(200).json(
         new ApiResponse(
             200,
-            { question, answer },
+           doubt,
             "AI response generated successfully"
+        )
+    )
+})
+
+
+// history 
+
+
+
+export const getDoubtHistory = asynchandler(async(req, res) => {
+    const doubts = await Doubt.find({
+        user: req.user?._id
+    }).sort({ createdAt: -1 })
+
+    return res.status(200).json(
+        new ApiResponse(
+            200,
+            doubts,
+            "Doubt history fetched successfully"
         )
     )
 })
