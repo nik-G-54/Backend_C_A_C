@@ -47,6 +47,19 @@ app.use("/api/v1/subscriptions", subscriptionRoutes);
 app.use("/api/v1/chat", chatRoutes)
 app.use("/api/v1/ai", aiRoutes)
 
+// Default Express Error Handler to prevent HTML stack traces
+app.use((err, req, res, next) => {
+    const statusCode = err.statuscode || err.statusCode || 500;
+    const message = err.message || "Internal Server Error";
+    
+    return res.status(statusCode).json({
+        success: false,
+        statusCode,
+        message,
+        errors: err.errors || []
+    });
+});
+
 export {app}
 
 

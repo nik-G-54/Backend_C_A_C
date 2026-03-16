@@ -5,6 +5,6 @@ import router from "./chat.route.js";
 
 const route=Router();
 
-router.route("/ask").post(jwtverify,askAI)
+router.route("/ask").post(askAI)  // here i should not add jwt because i use it for testing in the post man thats hwy but later add here 
 
 export default router;
