@@ -29,6 +29,7 @@ import { ApiResponse } from "../utils/ApiResponse.js"
 import { ApiError } from "../utils/ApiError.js"
 import { asynchandler } from "../utils/asynchandler.js"
 import { Doubt } from "../models/dout.model.js"
+import { generateNotesPDF } from "../service/pdf.service.js"
 
 export const askAI = asynchandler(async (req, res) => {
 
@@ -72,4 +73,23 @@ export const getDoubtHistory = asynchandler(async(req, res) => {
             "Doubt history fetched successfully"
         )
     )
+})
+
+
+
+///pdf grnerater
+
+export const generateNotes=asynchandler(async(res,req)=>{
+
+    const doubts=await Doubt.find({
+        user: req.user?._id
+
+    }).sort({createdAt:-1})
+
+    if(doubts){
+        throw new ApiError(404,"No doubts found")
+    }
+
+generateNotesPDF(doubts,res)
+
 })

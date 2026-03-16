@@ -28,3 +28,12 @@ Likes
 Views
 Comments
 Subscribe Button
+
+
+
+
+
+
+
+
+for downlod the Pdf we use ====npm install pdfkit  this is pakage which hep to downlod the pdf or json data to the pdf 
