@@ -30,6 +30,7 @@ import { ApiError } from "../utils/ApiError.js"
 import { asynchandler } from "../utils/asynchandler.js"
 import { Doubt } from "../models/dout.model.js"
 import { generateNotesPDF } from "../service/pdf.service.js"
+import { Video } from "../models/video.model.js"
 
 export const askAI = asynchandler(async (req, res) => {
 
@@ -91,5 +92,39 @@ export const generateNotes=asynchandler(async(res,req)=>{
     }
 
 generateNotesPDF(doubts,res)
+
+})
+
+
+// 
+export const VideoDoubtAI=asynchandler(async(req,res)=>{
+    const {videoId,question}=req.body
+
+    if (!videoId || !question) {
+        throw new ApiError(400, "VideoId and Question are required")
+    }
+
+    const video= await Video.find(ById(videoId)) 
+
+     if (!video) {
+        throw new ApiError(404, "Video not found")
+    }
+    
+     const prompt = `
+Video Transcript:
+${video.transcript}
+
+Student Question:
+${question}
+
+Answer based only on the transcript.
+`
+
+
+  const answer = await generateAIResponse(prompt)
+
+    return res.status(200).json(
+        new ApiResponse(200, { answer }, "Video doubt solved successfully")
+    )
 
 })

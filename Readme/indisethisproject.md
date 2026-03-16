@@ -37,3 +37,19 @@ Subscribe Button
 
 
 for downlod the Pdf we use ====npm install pdfkit  this is pakage which hep to downlod the pdf or json data to the pdf 
+
+
+
+
+
+Video Upload
+     ↓
+Extract Audio
+     ↓
+Speech-to-Text (Whisper)
+     ↓
+Generate Transcript
+     ↓
+Save in MongoDB
+     ↓
+AI can answer video doubts

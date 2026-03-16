@@ -37,6 +37,10 @@ const videoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: "User"
     },
+    transcript:{
+   type:String,
+   default:""
+},
     isPublished: {
         type: Boolean,
         default: true
