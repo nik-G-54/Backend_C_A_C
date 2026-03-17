@@ -61,3 +61,26 @@ for extract the audio from video we implement this
 We need FFmpeg to extract audio from video.
 
 Install FFmpeg   [[] lecture.mp4  →  lecture.mp3]
+
+
+
+
+
+we introduced rag 
+Video Upload
+     ↓
+Transcript
+     ↓
+Split into chunks
+     ↓
+Generate embeddings
+     ↓
+Store in database
+     ↓
+Student question
+     ↓
+Vector search
+     ↓
+Relevant chunk
+     ↓
+AI answer
