@@ -110,16 +110,24 @@ export const VideoDoubtAI=asynchandler(async(req,res)=>{
         throw new ApiError(404, "Video not found")
     }
     
-     const prompt = `
-Video Transcript:
-${video.transcript}
+//      const prompt = `
+// Video Transcript:
+// ${video.transcript}
 
-Student Question:
-${question}
+// Student Question:
+// ${question}
 
-Answer based only on the transcript.
-`
+// Answer based only on the transcript.
+// `
+const prompt= `
+Video Content:
+${bestChunk.text}
 
+Student Questiion:
+${
+    question
+} 
+Answer using only  the content above`
 
   const answer = await generateAIResponse(prompt)
 
