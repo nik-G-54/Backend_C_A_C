@@ -53,3 +53,11 @@ Generate Transcript
 Save in MongoDB
      ↓
 AI can answer video doubts
+
+
+
+
+for extract the audio from video we implement this 
+We need FFmpeg to extract audio from video.
+
+Install FFmpeg   [[] lecture.mp4  →  lecture.mp3]
