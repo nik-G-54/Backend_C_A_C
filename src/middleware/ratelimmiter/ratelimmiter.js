@@ -3,7 +3,7 @@ import rateLimit from "express-rate-limit";
 
 // general api route 
 export const ApiRatelimiter= rateLimit({
-    windowsMs:15*60*1000,
+    windowMs:15*60*1000,
     max:100, // 100 request per min
    message:{
 success:false,
@@ -16,8 +16,8 @@ message:"to many request please try again"
 // strict limmiter for registration 
 
 export const registerratelimt=rateLimit({
-    windowsMs:15 * 60 * 1000,
-    max:5,
+    windowMs:15 * 60 * 1000,
+    max:50,
     message:{
         success:false ,
         message:"to many request"
@@ -26,7 +26,7 @@ export const registerratelimt=rateLimit({
 
 /// login ratelimmiter
 export const logginratelimit= rateLimit({
-    windowsMs:5*60*1000,
+    windowMs:5*60*1000,
     max:10,
     message:{
         status:false,
