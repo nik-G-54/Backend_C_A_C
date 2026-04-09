@@ -26,7 +26,7 @@ const userSchema= new Schema(
     },
     fullname:{
         type:String,
-        reuired:true,
+        required:true,
         lowercase:true,
         trim:true
     },
@@ -67,14 +67,14 @@ const userSchema= new Schema(
 userSchema.pre("save",async function(next){
     if(!this.isModified("password")) return ; // this is use to check that only  password is modified or not if not then return if other feild modified like username or email then it will not return and it will save the data in the database
     this.password=await  bcrypt.hash(this.password,10)
-   
+   next();
 })
    userSchema.methods.isPasswordCorrect=async function (password){
     return await bcrypt.compare(password,this.password)
    }  
 
 
-userSchema.methods.generateAccessToken=function async(){
+userSchema.methods.generateAccessToken=async function(){
     return  jwt.sign({
         _id:this._id,
       email: this.email,
@@ -87,7 +87,7 @@ process.env.ACCESS_TOKEN_SECRET,
 }
 )}
 
-userSchema.methods.generateRefreshToken=function async(){
+userSchema.methods.generateRefreshToken= async function(){
     return jwt.sign({
         _id:this._id
     },
