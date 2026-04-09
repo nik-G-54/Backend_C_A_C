@@ -67,7 +67,7 @@ const userSchema= new Schema(
 userSchema.pre("save",async function(next){
     if(!this.isModified("password")) return ; // this is use to check that only  password is modified or not if not then return if other feild modified like username or email then it will not return and it will save the data in the database
     this.password=await  bcrypt.hash(this.password,10)
-   next();
+  
 })
    userSchema.methods.isPasswordCorrect=async function (password){
     return await bcrypt.compare(password,this.password)
