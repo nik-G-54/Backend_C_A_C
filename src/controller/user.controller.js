@@ -333,40 +333,87 @@ const updateUserAvtar = asynchandler(async (req, res) => {
         .json(new ApiResponse(200, user, "Avtar image updated successfully"))
 
 });
-
 const updateUserCoverImage = asynchandler(async (req, res) => {
-    const coverImageLocalPath = req.file?.path
+    const coverImageLocalPath = req.file?.path;
 
     if (!coverImageLocalPath) {
-        throw new ApiError(400, "Cover image file is missing")
+        throw new ApiError(400, "Cover image file is missing");
     }
 
-    //TODO: delete old image - assignment
+    // 1️⃣ Get user first
+    const user = await User.findById(req.user?._id);
 
-
-    const coverImage = await uploadOnCloudinary(coverImageLocalPath)
-
-    if (!coverImage.url) {
-        throw new ApiError(400, "Error while uploading on avatar")
-
+    if (!user) {
+        throw new ApiError(404, "User not found");
     }
 
-    const user = await User.findByIdAndUpdate(
-        req.user?._id,
-        {
-            $set: {
-                coverImage: coverImage.url
-            }
-        },
-        { new: true }
-    ).select("-password")
+    // 2️⃣ Store old public_id
+    const oldPublicId = user.coverImage?.public_id;
 
-    return res
-        .status(200)
-        .json(
-            new ApiResponse(200, user, "Cover image updated successfully")
-        )
-})
+    // 3️⃣ Upload new image
+    const coverImage = await uploadOnCloudinary(coverImageLocalPath);
+
+    if (!coverImage?.url) {
+        throw new ApiError(400, "Error while uploading on Cloudinary");
+    }
+
+    // 4️⃣ Update user
+    user.coverImage = {
+        url: coverImage.url,
+        public_id: coverImage.public_id
+    };
+
+    await user.save({ validateBeforeSave: false });
+
+    // 5️⃣ Delete old image (after successful update)
+    if (oldPublicId) {
+        await deletefilefromCloudinary(oldPublicId);
+    }
+
+    return res.status(200).json(
+        new ApiResponse(200, user, "Cover image updated successfully")
+    );
+});
+
+// const updateUserCoverImage = asynchandler(async (req, res) => {
+//     const coverImageLocalPath = req.file?.path
+
+//     if (!coverImageLocalPath) {
+//         throw new ApiError(400, "Cover image file is missing")
+//     }
+
+//     //TODO: delete old image - assignment
+
+
+//     const coverImage = await uploadOnCloudinary(coverImageLocalPath)
+
+//     if (!coverImage.url) {
+//         throw new ApiError(400, "Error while uploading on avatar")
+
+//     }
+
+//     const user = await User.findById( req.user?._id)
+//         {
+//            $set: {
+//   coverImage: {
+//     url: coverImage.url,
+//     public_id: coverImage.public_id
+//   }
+// },
+//         { new: true }
+//     ).select("-password")
+// if(user.coverImage.public_id) {
+//         await deletefilefromCloudinary(user.coverImage.public_id)
+//     }
+
+
+
+//     return res
+//         .status(200)
+//         .json(
+//             new ApiResponse(200, user, "Cover image updated successfully")
+//         )
+// })
 
 const getUserChannelProfile = asynchandler(async (req, res) => {
     const { username } = req.params
