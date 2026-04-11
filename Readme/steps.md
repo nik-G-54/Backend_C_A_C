@@ -38,3 +38,7 @@ POST /api/v1/subscriptions/:channelId
 
 
 socketio is not completed some part is left 
+
+
+
+i have solve the coverimage and avtar url also i have solve dome issue relatwed to the sepeling mistakes 
