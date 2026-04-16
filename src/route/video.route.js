@@ -6,8 +6,8 @@ import { jwtverify } from "../middleware/auth.middleware.js";
 const router=Router();
 
 router.route("/upload").post(jwtverify,Upload.fields([
-    {name:"videoupload",maxCount:1},
-    {name:"thumbnailupload",maxCount:1}
+    {name:"video",maxCount:1},
+    {name:"thumbnail",maxCount:1}
 ]),uploadVideo)
 router.route("/getallvideos").get(getALLvideo)
 router.route("/:videoId").get(getVideoById)

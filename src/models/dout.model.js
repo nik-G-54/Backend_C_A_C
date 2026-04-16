@@ -8,7 +8,7 @@ const doubtSchema= new mongoose.Schema({
     },
     question:{
         type:String,
-        require:true
+        required:true
     }, answer:{
         type:String,
         required:true

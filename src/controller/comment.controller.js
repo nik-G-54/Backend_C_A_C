@@ -51,7 +51,11 @@ const deleteComment=asynchandler(async(req,res)=>{
 
     const {commentId}= req.params
 
-      const comment =await Comment.findById(commentId)
+      const comment = await Comment.findById(commentId)
+
+      if (!comment) {
+          throw new ApiError(404, "Comment not found")
+      }
        
          if(comment.owner.toString() !== req.user._id.toString()){
         throw new ApiError(403,"You can delete only your comment")

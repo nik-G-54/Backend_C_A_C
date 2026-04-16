@@ -1,8 +1,6 @@
 import ffmpeg from "fluent-ffmpeg";
 import ffmpegPath from "ffmpeg-static";
 import path from "path"
-import { resolve } from "dns";
-import { rejects } from "assert";
 
 
 ffmpeg.setFfmpegPath(ffmpegPath)

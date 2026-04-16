@@ -80,17 +80,14 @@ const userRegister = asynchandler(async (req, res) => {
 
     /// step-2 file path
 
-    const avtarlocalpath = req.files?.avtar[0]?.path // here we use optional chaining because if file not uplod then it will give error so by this we can avoid this error and it will return undefined if file not uplod
-    console.log(avtarlocalpath, "==avtarpath")  // basically here we get the file path of the uplod file and this path is store in the local storage of our project and after that we will uplod this file on cloudinary and after uplod we will get the url of the file and this url we will store in the db and this url we will use to display the image on the frontend
+    const avtarlocalpath = req.files?.avtar?.[0]?.path
+    console.log(avtarlocalpath, "==avtarpath")
     console.log(req.files);
-    const converImagelocalpath = req.files?.coverImage[0].path;
+    const converImagelocalpath = req.files?.coverImage?.[0]?.path;
     console.log(converImagelocalpath, "===coverimagepath");
     console.log(req.files);
     if (!avtarlocalpath) {
-        throw new ApiError(409, "error: file path not fpound")
-    }
-    if (!converImagelocalpath) {
-        throw new ApiError(409, "coverImage path not found")
+        throw new ApiError(409, "error: avatar file path not found")
     }
 
 
@@ -110,8 +107,8 @@ const userRegister = asynchandler(async (req, res) => {
         fullname,
         username: username.toLowerCase(),
         email,
-        avtar: avtar?.url,
-        coverImage: coverImage?.url || "",
+        avtar: { url: avtar.url, public_id: avtar.public_id },
+        coverImage: { url: coverImage?.url || "", public_id: coverImage?.public_id || "" },
         password,
     })
 
@@ -142,7 +139,7 @@ const loginUser = asynchandler(async (req, res) => {
 
     const { email, password, username } = req.body
 
-    if ([email, password, username].some((field) => field?.trim() === "")) {
+    if ([email, password, username].some((field) => !field || field.trim() === "")) {
         throw new ApiError(400, "please provide a email or password or username")
     }
 
@@ -432,7 +429,7 @@ const getUserChannelProfile = asynchandler(async (req, res) => {
                 from: "subscriptions",
                 localField: "_id",
                 foreignField: "channel",
-                to: "subscribers"
+                as: "subscribers"
             }
         },
         {
@@ -440,7 +437,7 @@ const getUserChannelProfile = asynchandler(async (req, res) => {
                 from: "subscriptions",
                 localField: "_id",
                 foreignField: "subscriber",
-                to: "subscribedTo"
+                as: "subscribedTo"
             }
         },
         {

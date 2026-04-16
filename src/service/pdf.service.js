@@ -14,10 +14,9 @@ export const generateNotesPDF=(notes,res)=>{
     doc.fontSize(20).text("AI Generated Study Notes",{align:"center"})
      doc.moveDown()
 
-     notes.forEach((iteam,index)=>{
+     notes.forEach((item, index) => {
         doc.fontSize(14).text(`Q${index+1}: ${item.question}`)
         doc.moveDown(0.5)
-
 
         doc.fontSize(12).text(`Answer: ${item.answer}`)
         doc.moveDown()

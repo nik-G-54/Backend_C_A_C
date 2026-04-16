@@ -4,30 +4,25 @@ import { asynchandler } from "../utils/asynchandler.js";
 import jwt from "jsonwebtoken"
 
 
-export const jwtverify = asynchandler(async (req, res,next) => {
+export const jwtverify = asynchandler(async (req, res, next) => {
     try {
-
         const token = req.cookies?.accessToken || req.header("Authorization")?.replace("Bearer ", "")
-        console.log("token", token)
 
         if (!token) {
-            throw new ApiError(401, "invalid token  \\ unautherised user ")
+            throw new ApiError(401, "Unauthorized: no token provided")
         }
 
         const decodeToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET)
-        console.log(decodeToken)
         const user = await User.findById(decodeToken?._id).select("-password -refreshToken")
-        console.log(user)
 
         if (!user) {
-            throw new ApiError(401, "unautherised user invalid token")
+            throw new ApiError(401, "Unauthorized: invalid token")
         }
+
         req.user = user;
         next()
-     
 
     } catch (error) {
-        throw new ApiError(401, error?.message, "invalid user")
+        throw new ApiError(401, error?.message || "Unauthorized")
     }
 })
-

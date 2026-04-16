@@ -8,7 +8,7 @@ import { asynchandler } from "../utils/asynchandler.js";
 const toggleSubscribe=asynchandler(async(req,res)=>{
 
     const {channelId}= req.params
-    const userId=req.user.userId
+    const userId=req.user._id
 
      if (!channelId) {
         throw new ApiError(400, "Channel id required")
@@ -43,7 +43,7 @@ const newSubscriber=await Subscription.create({
     return res.status(200).json(
         new ApiResponse(
             200,
-            newSubscription,
+            newSubscriber,
             "Subscribed successfully"
         )
     )

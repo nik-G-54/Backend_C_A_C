@@ -11,7 +11,7 @@ const togglelike=asynchandler(async(req,res)=>{
     const {VideoId}=req.params
     const userId=req.user._id
 
-    // usser already likes the video 
+    // user already liked the video
     const existLike= await Like.findOne(
        {
         video:VideoId,
@@ -20,23 +20,23 @@ const togglelike=asynchandler(async(req,res)=>{
     )
 
     if(existLike){
-     //removelike
+     //remove like
        await Like.deleteOne({
           _id:existLike._id
       })
 
-      return res.stauts(200),json(
+      return res.status(200).json(
         new ApiResponse(200,null,"VideoUnliked")
       )
     }
     else{
-        // add like 
+        // add like
         await Like.create({
             video:VideoId,
-            LikedBy:userId
+            likedBy:userId
         })
 
-        return res.stauts(200).json(
+        return res.status(200).json(
             new ApiResponse(200,null,"VideoLIked")
         )
     }

@@ -80,14 +80,14 @@ export const getDoubtHistory = asynchandler(async(req, res) => {
 
 ///pdf grnerater
 
-export const generateNotes=asynchandler(async(res,req)=>{
+export const generateNotes = asynchandler(async(req, res) => {
 
-    const doubts=await Doubt.find({
+    const doubts = await Doubt.find({
         user: req.user?._id
 
     }).sort({createdAt:-1})
 
-    if(doubts){
+    if(!doubts.length){
         throw new ApiError(404,"No doubts found")
     }
 
@@ -97,39 +97,34 @@ generateNotesPDF(doubts,res)
 
 
 // 
-export const VideoDoubtAI=asynchandler(async(req,res)=>{
-    const {videoId,question}=req.body
+export const VideoDoubtAI = asynchandler(async(req, res) => {
+    const { videoId, question } = req.body
 
     if (!videoId || !question) {
         throw new ApiError(400, "VideoId and Question are required")
     }
 
-    const video= await Video.find(ById(videoId)) 
+    const video = await Video.findById(videoId)
 
-     if (!video) {
+    if (!video) {
         throw new ApiError(404, "Video not found")
     }
-    
-//      const prompt = `
-// Video Transcript:
-// ${video.transcript}
 
-// Student Question:
-// ${question}
+    // TODO: Implement full RAG — embed question, search TranscriptChunk collection,
+    // pick the chunk with highest cosine similarity, then build the prompt from it.
+    // For now, fall back to the full video transcript stored on the video document.
+    const contextText = video.transcript || "No transcript available for this video."
 
-// Answer based only on the transcript.
-// `
-const prompt= `
+    const prompt = `
 Video Content:
-${bestChunk.text}
+${contextText}
 
-Student Questiion:
-${
-    question
-} 
-Answer using only  the content above`
+Student Question:
+${question}
 
-  const answer = await generateAIResponse(prompt)
+Answer using only the content above`
+
+    const answer = await generateAIResponse(prompt)
 
     return res.status(200).json(
         new ApiResponse(200, { answer }, "Video doubt solved successfully")

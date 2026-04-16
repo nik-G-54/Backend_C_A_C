@@ -6,16 +6,16 @@ const commentSchema=new mongoose.Schema({
     video:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"Video",
-        require:true
+        required:true
     },
     owner:{
         type:mongoose.Schema.Types.ObjectId,
         ref:"User",
-        require:true
+        required:true
     },
     content:{
         type:String,
-        require:true,
+        required:true,
         trim:true
     }
 },

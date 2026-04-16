@@ -1,19 +1,19 @@
 import mongoose from "mongoose";
 
-const likeschema= new mongoose.Schema(
+const likeschema = new mongoose.Schema(
     {
-        video:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"Video",
-            required:true
+        video: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Video",
+            required: true
         },
-        likes:{
-            type:mongoose.Schema.Types.ObjectId,
-            ref:"User",
-            required:true
+        likedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true
         }
     },
-    {timestamps:true}
+    { timestamps: true }
 )
 
 export const Like=mongoose.model("Like",likeschema)

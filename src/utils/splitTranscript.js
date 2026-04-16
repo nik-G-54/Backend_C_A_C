@@ -1,12 +1,12 @@
-export const splitTranscript=(text)=>{
-    const words=text.split("")   
-    const chunkSize=200
+export const splitTranscript = (text) => {
+    const words = text.split(" ")
+    const chunkSize = 200
 
-    const chunks=[]
+    const chunks = []
 
-    for(let i=0;i<words.length;i+chunkSize){
-            chunks.push(words.slice(i,i+chunkSize).join(" "))
+    for (let i = 0; i < words.length; i += chunkSize) {
+        chunks.push(words.slice(i, i + chunkSize).join(" "))
     }
 
     return chunks
-}
+}

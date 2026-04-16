@@ -6,6 +6,7 @@ import {uploadOnCloudinary} from "../utils/cloudinary.js"
 import {deletefilefromCloudinary} from "../utils/deletefilefromCloudinary.js"
 import { User } from "../models/user.model.js"
 import { Subscription } from "../models/subscription.model.js"
+import { Like } from "../models/like.model.js"
 
 
 
@@ -68,7 +69,6 @@ const getALLvideo=asynchandler(async(req,res)=>{
         )
 
     });
-    console.log("all videos:",getALLvideo)
 
     // get videoby id 
 
@@ -98,7 +98,7 @@ console.log(subscriberCount)
 const likeCount = await Like.countDocuments({
  video:videoId
 })
-console("totalLikes:",likeCount)
+console.log("totalLikes:",likeCount)
 
 return res.status(200).json(
     new ApiResponse(

@@ -10,7 +10,7 @@ export const getChatMessages = asynchandler(async (req,res)=>{
     const messages = await ChatMessage.find({
         video: videoId
     })
-    .populate("user","username avatar")
+    .populate("user", "username avtar")
     .sort({createdAt:1})
 
     return res.status(200).json(
