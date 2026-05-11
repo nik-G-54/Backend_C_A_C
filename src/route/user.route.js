@@ -26,7 +26,7 @@ router.route("/register").post(registerratelimt,Upload.fields([  // here file ac
         maxcount:1
     }
 ]),userRegister)
-router.route("/login").post(logginratelimit,loginUser)
+router.route("/login").post(loginUser)
 
 // secured route 
 // router.route("/logout").post(jwtverify,logoutUser)

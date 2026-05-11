@@ -137,14 +137,14 @@ const loginUser = asynchandler(async (req, res) => {
     // by caling both function generate and accesstoken and refresh token function 
     //7-send refresh token and accestoken to the frontend and also store refresh token in the db for future use and also set this refresh token in the httpOnly cookie for security purpose because by this we can avoid the security issue because if we send this data to the frontend then it can be easily accessed by the hacker and they can use this data to hack our application so by this we can avoid this issue and also we can reduce the size of the responce because we don't need to send this data to the frontend 
 
-    const { email, password, username } = req.body
+    const { email, password } = req.body
 
-    if ([email, password, username].some((field) => !field || field.trim() === "")) {
+    if ([email, password].some((field) => !field || field.trim() === "")) {
         throw new ApiError(400, "please provide a email or password or username")
     }
 
     const user = await User.findOne({
-        $or: [{ email }, { username }]
+        $or: [{ email }]
     })
     console.log("detail of user: ", user)
     if (!user) {
